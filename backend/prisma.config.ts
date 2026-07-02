@@ -7,9 +7,10 @@
     "node": "22.x"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  },
+  "dev": "nodemon src/server.js",
+  "build": "prisma generate",
+  "start": "node src/server.js"
+}
   "keywords": [
     "ecommerce",
     "api",
