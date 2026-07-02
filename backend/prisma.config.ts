@@ -6,10 +6,13 @@
   "engines": {
     "node": "22.x"
   },
+  {
   "scripts": {
-  "dev": "nodemon src/server.js",
-  "build": "prisma generate",
-  "start": "node src/server.js"
+    "dev": "nodemon src/server.js",
+    "build": "prisma generate",
+    "postinstall": "prisma generate",
+    "start": "node src/server.js"
+  }
 }
   "keywords": [
     "ecommerce",
