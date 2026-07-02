@@ -1,0 +1,21 @@
+{
+  "name": "novastore",
+  "version": "1.0.0",
+  "description": "A modern full-stack e-commerce web application built with **React**, **Node.js**, **Express.js**, **Prisma ORM**, **PostgreSQL (Neon)**, and **JWT Authentication**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/23008024/NovaStore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/23008024/NovaStore/issues"
+  },
+  "homepage": "https://github.com/23008024/NovaStore#readme"
+}
