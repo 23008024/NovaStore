@@ -1,14 +1,33 @@
-import "dotenv/config";
-import { defineConfig } from "prisma/config";
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is missing in .env file");
-}
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-
-  datasource: {
-    url: process.env.DATABASE_URL,
+{
+  "name": "novastore-backend",
+  "version": "1.0.0",
+  "description": "NovaStore E-commerce Backend API",
+  "main": "src/server.js",
+  "engines": {
+    "node": "22.x"
   },
-});
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "api",
+    "nodejs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.19.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
