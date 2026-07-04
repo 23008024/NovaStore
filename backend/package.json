@@ -6,11 +6,10 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "build": "prisma generate",
-    "postinstall": "prisma generate",
-    "start": "node src/server.js"
-  },
+  "dev": "nodemon src/server.js",
+  "build": "prisma generate",
+  "start": "node src/server.js"
+}
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "bcrypt": "^6.0.0",
