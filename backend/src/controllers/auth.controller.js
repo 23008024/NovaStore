@@ -41,7 +41,7 @@ const register = async (req, res) => {
     } catch(error) {
 
 
-        res.status(400).json({
+        res.status(401).json({
 
             success: false,
 
@@ -92,7 +92,7 @@ const login = async (req, res) => {
     } catch(error) {
 
 
-        res.status(400).json({
+        res.status(401).json({
 
             success: false,
 
