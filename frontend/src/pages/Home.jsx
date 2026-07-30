@@ -1,4 +1,11 @@
 import { Link } from "react-router-dom";
+import profile from "../assets/profile.jpeg";
+import {
+  FaLinkedin,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 export default function Home() {
 
@@ -81,15 +88,67 @@ export default function Home() {
 
                     </div>
 
-                    <div className="hidden lg:flex justify-center">
+                    <div className="flex justify-center">
 
-                        <img
-                            src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900"
-                            alt="Shopping"
-                            className="rounded-3xl shadow-2xl"
-                        />
+    <div className="bg-white text-gray-800 rounded-3xl shadow-2xl p-8 text-center max-w-sm">
 
-                    </div>
+        <img
+            src={profile}
+            alt="Naftali Mudau"
+            className="w-56 h-56 rounded-full object-cover border-4 border-blue-600 mx-auto"
+        />
+
+        <h2 className="text-3xl font-bold mt-6">
+            Naftali Mudau
+        </h2>
+
+        <p className="text-gray-500 mt-2">
+            Full Stack Web Developer
+        </p>
+
+        <div className="mt-6 space-y-3 text-left">
+
+            <a
+                href="tel:0608158836"
+                className="flex items-center gap-3 hover:text-blue-600"
+            >
+                <FaPhoneAlt />
+                060 815 8836
+            </a>
+
+            <a
+                href="mailto:mudaunaftali@gmail.com"
+                className="flex items-center gap-3 hover:text-blue-600"
+            >
+                <FaEnvelope />
+                mudaunaftali@gmail.com
+            </a>
+
+            <a
+                href="https://wa.me/27608158836"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 hover:text-green-600"
+            >
+                <FaWhatsapp />
+                WhatsApp Me
+            </a>
+
+            <a
+                href="https://www.linkedin.com/in/naftali-mudau-261a88314/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 hover:text-blue-700"
+            >
+                <FaLinkedin />
+                LinkedIn Profile
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
                 </div>
 
@@ -172,6 +231,106 @@ export default function Home() {
                 </div>
 
             </section>
+            <section className="py-20 bg-white">
+
+    <div className="max-w-5xl mx-auto px-6">
+
+        <div className="text-center">
+
+            <h2 className="text-4xl font-bold mb-6">
+                About Me
+            </h2>
+
+            <p className="text-lg text-gray-600 leading-8">
+                Hello! I'm <strong>Naftali Mudau</strong>, a passionate Full Stack
+                Web Developer with experience building modern, responsive, and
+                user-friendly web applications using React, Node.js, Express, and MySQL.
+                I enjoy solving real-world problems through technology and continuously
+                improving my skills by working on exciting projects.
+            </p>
+
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 mt-12">
+
+            <div className="bg-blue-50 rounded-2xl p-8 shadow">
+
+                <h3 className="text-2xl font-bold mb-4">
+                    Contact Information
+                </h3>
+
+                <p className="mb-3">
+                    📞 060 815 8836
+                </p>
+
+                <p className="mb-3">
+                    📧 mudaunaftali@gmail.com
+                </p>
+
+                <p>
+                    💼 LinkedIn:
+                </p>
+
+                <a
+                    href="https://www.linkedin.com/in/naftali-mudau-261a88314/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 break-all"
+                >
+                    linkedin.com/in/naftali-mudau-261a88314
+                </a>
+
+            </div>
+
+            <div className="bg-gray-50 rounded-2xl p-8 shadow">
+
+                <h3 className="text-2xl font-bold mb-4">
+                    Skills
+                </h3>
+
+                <div className="flex flex-wrap gap-3">
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        React
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        JavaScript
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        Node.js
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        Express
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        MySQL
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        HTML
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        CSS
+                    </span>
+
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full">
+                        Tailwind CSS
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
             {/* Call to Action */}
 
