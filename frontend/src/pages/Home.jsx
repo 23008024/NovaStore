@@ -242,12 +242,20 @@ export default function Home() {
             </h2>
 
             <p className="text-lg text-gray-600 leading-8">
-                Hello! I'm <strong>Naftali Mudau</strong>, a passionate Full Stack
-                Web Developer with experience building modern, responsive, and
-                user-friendly web applications using React, Node.js, Express, and MySQL.
-                I enjoy solving real-world problems through technology and continuously
-                improving my skills by working on exciting projects.
-            </p>
+    <strong>NovaStore</strong> is a self-developed full-stack eCommerce web application that I designed, built, and deployed from the ground up to demonstrate my software development skills. I was responsible for every stage of the project, including planning the system architecture, designing the user interface, developing the frontend, building the backend, creating and managing the database, implementing authentication, integrating APIs, testing the application, fixing bugs, and deploying the final product online.
+
+```
+<br /><br />
+
+The frontend was developed using <strong>React</strong>, <strong>JavaScript</strong>, <strong>Tailwind CSS</strong>, and <strong>Vite</strong> to create a fast, responsive, and user-friendly interface. The backend was built with <strong>Node.js</strong> and <strong>Express.js</strong>, providing secure RESTful APIs for user authentication, product management, shopping cart functionality, and order processing. <strong>MySQL</strong> was used as the relational database to store user accounts, products, orders, and other application data efficiently.
+
+<br /><br />
+
+Throughout the project, I implemented user registration and login, secure password handling, protected routes, role-based access, product catalog management, shopping cart functionality, responsive layouts, and database integration. I also managed version control with <strong>Git</strong> and <strong>GitHub</strong>, configured environment variables, and deployed the application to the cloud using <strong>Render</strong>. This project demonstrates my ability to independently develop, test, maintain, and deploy complete full-stack applications while following modern software development practices.
+```
+
+</p>
+
 
         </div>
 
