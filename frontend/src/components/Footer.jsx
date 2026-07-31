@@ -172,39 +172,39 @@ export default function Footer(){
 
                 <div>
 
+<h3 className="font-semibold text-lg mb-4">
+    Follow Us
+</h3>
 
-                    <h3 className="font-semibold text-lg mb-4">
+<div className="flex gap-4">
+    <a
+        href="https://www.facebook.com/mudau.naphtan"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cursor-pointer hover:text-blue-400"
+    >
+        Facebook
+    </a>
 
-                        Follow Us
+    <a
+        href="https://www.instagram.com/mudaunaftali?igsh=MTNpajd0ejY1bnUxZQ=="
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cursor-pointer hover:text-pink-400"
+    >
+        Instagram
+    </a>
 
-                    </h3>
-
-
-                    <div className="flex gap-4">
-
-
-                        <span className="cursor-pointer hover:text-blue-400">
-
-                            Facebook
-
-                        </span>
-
-
-                        <span className="cursor-pointer hover:text-blue-400">
-
-                            Instagram
-
-                        </span>
-
-
-                        <span className="cursor-pointer hover:text-blue-400">
-
-                            X
-
-                        </span>
-
-
-                    </div>
+    <a
+        href="https://x.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cursor-pointer hover:text-gray-400"
+    >
+        X
+    </a>
+</div>
+                    
 
 
                 </div>
