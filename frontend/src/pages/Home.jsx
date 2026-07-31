@@ -252,7 +252,6 @@ The frontend was developed using <strong>React</strong>, <strong>JavaScript</str
 <br /><br />
 
 Throughout the project, I implemented user registration and login, secure password handling, protected routes, role-based access, product catalog management, shopping cart functionality, responsive layouts, and database integration. I also managed version control with <strong>Git</strong> and <strong>GitHub</strong>, configured environment variables, and deployed the application to the cloud using <strong>Render</strong>. This project demonstrates my ability to independently develop, test, maintain, and deploy complete full-stack applications while following modern software development practices.
-```
 
 </p>
 
