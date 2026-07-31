@@ -137,7 +137,7 @@ export default function Footer(){
 
 
                         <li>
-                            support@novastore.com
+                            mudaunaftali@gmail.com
                         </li>
 
 
@@ -193,15 +193,6 @@ export default function Footer(){
         className="cursor-pointer hover:text-pink-400"
     >
         Instagram
-    </a>
-
-    <a
-        href="https://x.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="cursor-pointer hover:text-gray-400"
-    >
-        X
     </a>
 </div>
                     
