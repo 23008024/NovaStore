@@ -116,6 +116,52 @@ const loginUser = async (email, password) => {
         token
     };
 };
+const forgotPassword = async (email) => {
+
+    email = email.trim().toLowerCase();
+
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+
+    // Don't reveal whether the email exists
+    if (!user) {
+        return {
+            message:
+                "If an account with that email exists, a reset link has been sent."
+        };
+    }
+
+    const token = generateResetToken();
+
+    const expiry = new Date(
+        Date.now() + 30 * 60 * 1000
+    ); // 30 minutes
+
+    await prisma.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            resetToken: token,
+            resetTokenExpiry: expiry
+        }
+    });
+
+    const resetLink =
+        `${process.env.FRONTEND_URL}/reset-password/${token}`;
+
+    await sendResetEmail(
+        user.email,
+        resetLink
+    );
+
+    return {
+        message:
+            "If an account with that email exists, a reset link has been sent."
+    };
+
+};
 
 module.exports = {
     registerUser,
