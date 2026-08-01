@@ -16,8 +16,8 @@ import AdminRoute from "./routes/AdminRoute";
 import AdminOrders from "./pages/AdminOrders";
 import AdminUsers from "./pages/AdminUsers";
 import AdminCategories from "./pages/AdminCategories";
-<Route path="/forgot-password" element={<ForgotPassword />} />
-<Route path="/reset-password/:token" element={<ResetPassword />} />
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 export default function App() {
 
     return (
@@ -95,6 +95,53 @@ export default function App() {
                         </MainLayout>
                     }
                 />
+       <Route
+    path="/login"
+    element={
+        <MainLayout>
+            <Login />
+        </MainLayout>
+    }
+/>
+
+<Route
+    path="/register"
+    element={
+        <MainLayout>
+            <Register />
+        </MainLayout>
+    }
+/>
+
+<Route
+    path="/forgot-password"
+    element={
+        <MainLayout>
+            <ForgotPassword />
+        </MainLayout>
+    }
+/>
+
+<Route
+    path="/reset-password/:token"
+    element={
+        <MainLayout>
+            <ResetPassword />
+        </MainLayout>
+    }
+/>
+
+
+
+
+
+
+
+
+
+
+
+                
 
                 {/* ==========================
                    ADMIN
