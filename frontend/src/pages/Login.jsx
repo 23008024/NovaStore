@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
-
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -12,128 +11,156 @@ export default function Login() {
     const [remember, setRemember] = useState(false);
 
     const submit = async (e) => {
-
         e.preventDefault();
 
         try {
-
-            const loggedUser = await login(
-                email,
-                password,
-                remember
-            );
+            const loggedUser = await login(email, password, remember);
 
             if (loggedUser.role === "ADMIN") {
                 navigate("/admin");
             } else {
                 navigate("/");
             }
-
         } catch (error) {
-
-            alert(
-                error.response?.data?.message ||
-                "Login failed"
-            );
-
+            alert(error.response?.data?.message || "Login failed");
         }
     };
 
     return (
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
 
-        <div className="min-h-screen flex items-center justify-center px-5">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
 
-            <form
-                onSubmit={submit}
-                className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md"
-            >
+                <h2 className="text-3xl font-bold text-center mb-2">
+                    Login
+                </h2>
 
-                <h1 className="text-3xl font-bold text-center mb-6">
-                    Welcome Back
-                </h1>
-
-                <p className="text-gray-500 text-center mb-8">
-                    Login to continue shopping
+                <p className="text-center text-gray-500 mb-8">
+                    Welcome back! Sign in to continue.
                 </p>
 
-                {/* Email */}
+                <form onSubmit={submit}>
 
-                <div className="mb-5">
+                    {/* Email */}
 
-                    <label className="block text-sm font-medium mb-2">
-                        Email
-                    </label>
+                    <div className="mb-5">
 
-                    <input
-                        type="email"
-                        placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        autoComplete="email"
-                        required
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 outline-none transition focus:ring-2 focus:ring-blue-500"
-                    />
+                        <label className="block font-medium mb-2">
+                            Email Address
+                        </label>
 
-                </div>
+                        <input
+                            type="email"
+                            placeholder="you@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                            required
+                        />
 
-                {/* Password */}
+                    </div>
 
-                <div className="mb-4">
+                    {/* Password */}
 
-                    <label className="block text-sm font-medium mb-2">
-                        Password
-                    </label>
+                    <div className="mb-2 flex justify-between">
+
+                        <label className="font-medium">
+                            Password
+                        </label>
+
+                        <Link
+                            to="/forgot-password"
+                            className="text-blue-600 text-sm hover:underline"
+                        >
+                            Forgot Password?
+                        </Link>
+
+                    </div>
 
                     <input
                         type="password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
+                        className="w-full border rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
                         required
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 outline-none transition focus:ring-2 focus:ring-blue-500"
                     />
 
-                </div>
+                    {/* Remember Me */}
 
-                {/* Remember Me + Forgot Password */}
-
-                <div className="flex items-center justify-between mb-6">
-
-                    <label className="flex items-center gap-2 text-sm">
+                    <div className="flex items-center mb-6">
 
                         <input
                             type="checkbox"
                             checked={remember}
                             onChange={(e) => setRemember(e.target.checked)}
-                            className="rounded"
+                            className="mr-2"
                         />
 
-                        Remember Me
+                        <span className="text-sm">
+                            Remember Me
+                        </span>
 
-                    </label>
+                    </div>
 
-                    <Link
-                        to="/forgot-password"
-                        className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                    {/* Login Button */}
+
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
                     >
-                        Forgot Password?
-                    </Link>
+                        Login
+                    </button>
+
+                </form>
+
+                {/* Divider */}
+
+                <div className="flex items-center my-6">
+
+                    <hr className="flex-grow" />
+
+                    <span className="mx-3 text-gray-500 text-sm">
+                        Or
+                    </span>
+
+                    <hr className="flex-grow" />
 
                 </div>
 
-                {/* Login Button */}
+                {/* Google */}
 
                 <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
+                    className="w-full border rounded-lg py-3 mb-3 font-medium hover:bg-gray-50 transition"
                 >
-                    Login
+                    🔵 Login with Google
                 </button>
 
-            </form>
+                {/* Facebook */}
+
+                <button
+                    className="w-full border rounded-lg py-3 font-medium hover:bg-gray-50 transition"
+                >
+                    🔷 Login with Facebook
+                </button>
+
+                {/* Register */}
+
+                <p className="text-center text-gray-600 mt-8">
+
+                    New to <span className="font-semibold">NovaStore</span>?{" "}
+
+                    <Link
+                        to="/register"
+                        className="text-blue-600 hover:underline font-semibold"
+                    >
+                        Register
+                    </Link>
+
+                </p>
+
+            </div>
 
         </div>
-
     );
 }
