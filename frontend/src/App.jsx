@@ -16,6 +16,8 @@ import AdminRoute from "./routes/AdminRoute";
 import AdminOrders from "./pages/AdminOrders";
 import AdminUsers from "./pages/AdminUsers";
 import AdminCategories from "./pages/AdminCategories";
+<Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password/:token" element={<ResetPassword />} />
 export default function App() {
 
     return (
