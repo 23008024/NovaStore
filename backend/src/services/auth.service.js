@@ -162,8 +162,56 @@ const forgotPassword = async (email) => {
     };
 
 };
+const resetPassword = async (
+    token,
+    password
+) => {
+
+    const user = await prisma.user.findFirst({
+        where: {
+            resetToken: token,
+            resetTokenExpiry: {
+                gt: new Date()
+            }
+        }
+    });
+
+    if (!user) {
+        throw new Error(
+            "Invalid or expired reset link."
+        );
+    }
+
+    if (!passwordRegex.test(password)) {
+        throw new Error(
+            "Password must be at least 8 characters and contain an uppercase letter, lowercase letter, number and special character."
+        );
+    }
+
+    const hashedPassword =
+        await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            password: hashedPassword,
+            resetToken: null,
+            resetTokenExpiry: null
+        }
+    });
+
+    return {
+        message:
+            "Password has been reset successfully."
+    };
+
+};
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    forgotPassword,
+    resetPassword
 };
