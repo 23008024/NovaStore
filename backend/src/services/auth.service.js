@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { prisma } = require("../config/database");
 const { generateToken } = require("../utils/jwt");
+const { sendResetEmail } = require("./email.service");
 
 // Password must contain:
 // - Minimum 8 characters
