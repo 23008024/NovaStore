@@ -24,10 +24,11 @@ const registerUser = async (name, email, password) => {
     }
 
     // Email validation
-    if (!email.endsWith("@gmail.com")) {
-        throw new Error("Email must end with @gmail.com");
-    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+if (!emailRegex.test(email)) {
+    throw new Error("Please enter a valid email address.");
+}
     // Password validation
     if (!passwordRegex.test(password)) {
         throw new Error(
