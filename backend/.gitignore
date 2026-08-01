@@ -1,2 +1,17 @@
+# Dependencies
+node_modules/
+**/node_modules/
 
+# Prisma generated files
 /src/generated/prisma
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+
+# Build folders
+dist/
+build/
