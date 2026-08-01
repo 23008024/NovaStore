@@ -20,34 +20,22 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
 }
-
 model User {
-  id       String @id @default(uuid())
+  id        String @id @default(uuid())
 
-  // Personal Information
   firstName String
   lastName  String
 
-  // Keep for compatibility with existing code
-  name String
+  email     String @unique
+  password  String
 
-  email    String @unique
-  password String?
+  phoneCode String?
+  phone     String?
 
-  phone       String?
-  countryCode String? @default("+27")
+  phoneVerified Boolean @default(false)
 
-  // Authentication
-  emailVerified Boolean @default(false)
-
-  verificationToken String?
-  resetToken        String?
-  resetTokenExpiry  DateTime?
-
-  googleId   String? @unique
-  facebookId String? @unique
-
-  marketing Boolean @default(false)
+  resetToken String?
+  resetTokenExpiry DateTime?
 
   role Role @default(USER)
 
@@ -55,8 +43,26 @@ model User {
   updatedAt DateTime @updatedAt
 
   orders Order[]
-  cart   Cart?
+  cart Cart?
 }
+model OTP {
+
+  id String @id @default(uuid())
+
+  phone String
+
+  code String
+
+  expiresAt DateTime
+
+  verified Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
+
+
+
 model Product {
   id          String  @id @default(uuid())
   name        String
