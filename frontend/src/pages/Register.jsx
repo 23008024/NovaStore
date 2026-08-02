@@ -26,10 +26,13 @@ export default function Register() {
             const fullName = `${form.firstName} ${form.lastName}`;
 
             await register(
-                fullName,
-                form.email,
-                form.password
-            );
+    form.firstName,
+    form.lastName,
+    form.email,
+    form.password,
+    form.countryCode,
+    form.phone
+);
 
             alert("Registration successful!");
             navigate("/login");
