@@ -1,20 +1,30 @@
 const {
-    firstName,
-    lastName,
-    email,
-    password,
-    phoneCode,
-    phone
-} = req.body;
+    registerUser,
+    loginUser,
+    forgotPassword,
+    resetPassword
+} = require("../services/auth.service");
 
-const result = await registerUser(
-    firstName,
-    lastName,
-    email,
-    password,
-    phoneCode,
-    phone
+const register = async (req, res) => {
 
+    try {
+
+        const {
+            firstName,
+            lastName,
+            email,
+            password,
+            phoneCode,
+            phone
+        } = req.body;
+
+        const result = await registerUser(
+            firstName,
+            lastName,
+            email,
+            password,
+            phoneCode,
+            phone
         );
 
         res.status(201).json({
@@ -38,15 +48,9 @@ const login = async (req, res) => {
 
     try {
 
-        const {
-            email,
-            password
-        } = req.body;
+        const { email, password } = req.body;
 
-        const result = await loginUser(
-            email,
-            password
-        );
+        const result = await loginUser(email, password);
 
         res.status(200).json({
             success: true,
@@ -95,10 +99,7 @@ const resetPasswordController = async (req, res) => {
 
         const { token, password } = req.body;
 
-        const result = await resetPassword(
-            token,
-            password
-        );
+        const result = await resetPassword(token, password);
 
         res.status(200).json({
             success: true,
@@ -117,13 +118,8 @@ const resetPasswordController = async (req, res) => {
 };
 
 module.exports = {
-
     register,
-
     login,
-
     forgotPassword: forgotPasswordController,
-
     resetPassword: resetPasswordController
-
 };
