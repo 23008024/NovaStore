@@ -20,10 +20,10 @@ const registerUser = async (   firstName,
     phone) => {
 
     // Remove spaces
-    firstName = firstName.trim();
-lastName = lastName.trim();
-email = email.trim().toLowerCase();
-password = password.trim();
+    firstName = firstName?.trim() || "";
+lastName = lastName?.trim() || "";
+email = email?.trim().toLowerCase() || "";
+password = password?.trim() || "";
 phoneCode = phoneCode?.trim() || "";
 phone = phone?.trim() || "";
 
