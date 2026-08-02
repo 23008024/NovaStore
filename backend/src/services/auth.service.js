@@ -12,15 +12,26 @@ const { sendResetEmail } = require("./email.service");
 const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>/?])[A-Za-z\d@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>/?]{8,}$/;
 
-const registerUser = async (name, email, password) => {
+const registerUser = async (   firstName,
+    lastName,
+    email,
+    password,
+    phoneCode,
+    phone) => {
 
     // Remove spaces
-    name = name.trim();
-    email = email.trim().toLowerCase();
-    password = password.trim();
+    firstName = firstName.trim();
+lastName = lastName.trim();
+email = email.trim().toLowerCase();
+password = password.trim();
+phoneCode = phoneCode?.trim() || "";
+phone = phone?.trim() || "";
 
     // Check blank fields
-    if (!name || !email || !password) {
+    if (!firstName ||
+    !lastName ||
+    !email ||
+    !password) {
         throw new Error("All fields are required.");
     }
 
@@ -52,9 +63,13 @@ if (!emailRegex.test(email)) {
     // Create user
     const user = await prisma.user.create({
         data: {
-            name,
-            email,
-            password: hashedPassword
+            firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        phoneCode,
+        phone,
+        phoneVerified: false
         }
     });
 
@@ -62,10 +77,13 @@ if (!emailRegex.test(email)) {
 
     return {
         user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role
+             id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    phoneCode: user.phoneCode,
+    phone: user.phone,
+    role: user.role
         },
         token
     };
@@ -109,9 +127,12 @@ const loginUser = async (email, password) => {
     return {
         user: {
             id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    phoneCode: user.phoneCode,
+    phone: user.phone,
+    role: user.role
         },
         token
     };
