@@ -7,7 +7,7 @@ const {
     phone
 } = req.body;
 
-await registerUser(
+const result = await registerUser(
     firstName,
     lastName,
     email,
