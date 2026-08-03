@@ -33,6 +33,9 @@ model User {
   phone             String?
   phoneVerified     Boolean  @default(false)
 
+  otpCode           String?
+  otpExpiry         DateTime?
+
   resetToken        String?
   resetTokenExpiry  DateTime?
 
