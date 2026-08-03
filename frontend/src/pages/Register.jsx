@@ -18,12 +18,6 @@ export default function Register() {
     });
 
     const submit = async (e) => {
-        e.preventDefault();
-
-        try {
-
-            // Combine first and last name because your backend expects one "name"
-            const submit = async (e) => {
     e.preventDefault();
 
     try {
