@@ -21,10 +21,10 @@ export default function VerifyEmail() {
 
             setLoading(true);
 
-            const response = await api.post("/auth/verify-email", {
-                email,
-                otp
-            });
+            await api.post("/auth/verify-email", {
+    email,
+    code: otp
+});
 
             setMessage(response.data.message);
 
