@@ -21,10 +21,12 @@ export default function VerifyEmail() {
 
             setLoading(true);
 
-            await api.post("/auth/verify-email", {
+            const response = await api.post("/auth/verify-email", {
     email,
     code: otp
 });
+
+setMessage(response.data.message);
 
             setMessage(response.data.message);
 
@@ -65,11 +67,17 @@ export default function VerifyEmail() {
                     {email}
                 </p>
 
-                {message && (
-                    <div className="mb-4 p-3 rounded bg-blue-100 text-blue-700">
-                        {message}
-                    </div>
-                )}
+               {message && (
+    <div
+        className={`mb-4 p-3 rounded text-center ${
+            isSuccess
+                ? "bg-green-100 text-green-700 border border-green-300"
+                : "bg-red-100 text-red-700 border border-red-300"
+        }`}
+    >
+        {message}
+    </div>
+)}
 
                 <form onSubmit={verify}>
 
