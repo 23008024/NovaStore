@@ -16,6 +16,7 @@ export default function Register() {
         phone: "",
         marketing: false,
     });
+    const [message, setMessage] = useState("");
 
     const submit = async (e) => {
     e.preventDefault();
@@ -32,15 +33,17 @@ export default function Register() {
             marketing: form.marketing
         });
 
-        alert("Registration successful!");
 
-        navigate("/login");
+        setMessage(
+            "Registration successful! Please check your email and verify your account using the OTP code sent to you."
+        );
+
 
     } catch (error) {
 
-        alert(
+        setMessage(
             error.response?.data?.message ||
-            "Registration failed"
+            "Registration failed. Please try again."
         );
 
     }
@@ -86,6 +89,11 @@ export default function Register() {
                 </div>
 
                 <form onSubmit={submit}>
+                    {message && (
+    <div className="bg-green-100 text-green-700 border border-green-300 rounded-lg p-4 mb-5 text-center">
+        {message}
+    </div>
+)}
 
                     {/* First & Last Name */}
 
