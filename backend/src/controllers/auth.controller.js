@@ -2,7 +2,8 @@ const {
     registerUser,
     loginUser,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifyEmail
 } = require("../services/auth.service");
 
 const register = async (req, res) => {
@@ -116,10 +117,31 @@ const resetPasswordController = async (req, res) => {
     }
 
 };
+const verifyEmailController = async (req, res) => {
+    try {
 
+        const { email, code } = req.body;
+
+        const result = await verifyEmail(email, code);
+
+        res.status(200).json({
+            success: true,
+            message: result.message
+        });
+
+    } catch (error) {
+
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+};
 module.exports = {
     register,
     login,
-    forgotPassword: forgotPasswordController,
-    resetPassword: resetPasswordController
+    forgotPassword,
+    resetPassword,
+    verifyEmail: verifyEmailController
 };

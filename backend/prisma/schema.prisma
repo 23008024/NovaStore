@@ -21,17 +21,18 @@ enum OrderStatus {
   CANCELLED
 }
 model User {
-  id                String   @id @default(uuid())
+  id            String   @id @default(uuid())
 
-  firstName         String
-  lastName          String
+  firstName     String
+  lastName      String
 
-  email             String   @unique
-  password          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
 
-  phoneCode         String?
-  phone             String?
-  phoneVerified     Boolean  @default(false)
+  password      String
+
+  phoneCode     String?
+  phone         String?  @unique
 
   otpCode           String?
   otpExpiry         DateTime?
@@ -39,27 +40,25 @@ model User {
   resetToken        String?
   resetTokenExpiry  DateTime?
 
-  role              Role     @default(USER)
+  role          Role     @default(USER)
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  orders            Order[]
-  cart              Cart?
+  orders         Order[]
+  cart           Cart?
 }
 model OTP {
+  id         String   @id @default(uuid())
 
-  id String @id @default(uuid())
+  email      String
+  code       String
 
-  phone String
+  expiresAt  DateTime
 
-  code String
+  verified   Boolean  @default(false)
 
-  expiresAt DateTime
-
-  verified Boolean @default(false)
-
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 }
 
 

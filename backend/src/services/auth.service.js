@@ -1,7 +1,12 @@
 const bcrypt = require("bcrypt");
 const { prisma } = require("../config/database");
 const { generateToken } = require("../utils/jwt");
-const { sendResetEmail } = require("./email.service");
+const { generateOTP } = require("../utils/otp");
+const {
+    sendResetEmail,
+    sendVerificationEmail
+} = require("./email.service");
+
 
 // Password must contain:
 // - Minimum 8 characters
@@ -59,22 +64,43 @@ if (!emailRegex.test(email)) {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+const otp = generateOTP();
+const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
     // Create user
     const user = await prisma.user.create({
-        data: {
-            firstName,
+    data: {
+        firstName,
         lastName,
         email,
         password: hashedPassword,
         phoneCode,
-        phone,
-        phoneVerified: false
-        }
-    });
+        phone
+    }
+});
+
+console.log("Creating OTP...");
+
+const otpRecord =await prisma.oTP.create({
+    data: {
+        email,
+        code: otp,
+        expiresAt: otpExpiry
+    }
+});
+
+console.log("OTP created:", otpRecord);
+console.log("OTP saved successfully:", otp);
 
     const token = generateToken(user.id);
+    console.log("User created:", user.email);
+console.log("Sending verification email to:", email);
 
+await sendVerificationEmail(email, otp);
+
+console.log("Verification email function completed.");
+
+console.log("Verification email sent to:", email);
     return {
         user: {
              id: user.id,
@@ -88,7 +114,6 @@ if (!emailRegex.test(email)) {
         token
     };
 };
-
 const loginUser = async (email, password) => {
 
     // Remove spaces
@@ -101,21 +126,35 @@ const loginUser = async (email, password) => {
     }
 
     // Gmail validation
-    if (!email.endsWith("@gmail.com")) {
-        throw new Error("Email must end with @gmail.com");
-    }
+    // Email validation
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(email)) {
+    throw new Error("Please enter a valid email address.");
+}
 
     // Find user
     const user = await prisma.user.findUnique({
         where: { email }
     });
 
+    // User exists?
     if (!user) {
         throw new Error("Invalid email or password.");
     }
 
+    // Email verified?
+    if (!user.emailVerified) {
+        throw new Error(
+            "Please verify your email before logging in."
+        );
+    }
+
     // Compare password
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(
+        password,
+        user.password
+    );
 
     if (!passwordMatch) {
         throw new Error("Invalid email or password.");
@@ -124,19 +163,21 @@ const loginUser = async (email, password) => {
     // Generate token
     const token = generateToken(user.id);
 
+    // Return response
     return {
         user: {
             id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneCode: user.phoneCode,
-    phone: user.phone,
-    role: user.role
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneCode: user.phoneCode,
+            phone: user.phone,
+            role: user.role
         },
         token
     };
 };
+
 const forgotPassword = async (email) => {
 
     email = email.trim().toLowerCase();
@@ -183,10 +224,7 @@ const forgotPassword = async (email) => {
     };
 
 };
-const resetPassword = async (
-    token,
-    password
-) => {
+const resetPassword = async (token, password) => {
 
     const user = await prisma.user.findFirst({
         where: {
@@ -196,11 +234,12 @@ const resetPassword = async (
             }
         }
     });
+    if (!user.emailVerified) {
+    throw new Error("Please verify your email before logging in.");
+}
 
     if (!user) {
-        throw new Error(
-            "Invalid or expired reset link."
-        );
+        throw new Error("Invalid or expired reset link.");
     }
 
     if (!passwordRegex.test(password)) {
@@ -209,8 +248,7 @@ const resetPassword = async (
         );
     }
 
-    const hashedPassword =
-        await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await prisma.user.update({
         where: {
@@ -224,15 +262,123 @@ const resetPassword = async (
     });
 
     return {
-        message:
-            "Password has been reset successfully."
+        message: "Password has been reset successfully."
+    };
+
+}; // ✅ resetPassword ends here
+
+const verifyPhone = async (phoneCode, phone, otp) => {
+
+    const otpRecord = await prisma.oTP.findFirst({
+        where: {
+            phone: `${phoneCode}${phone}`,
+            code: otp,
+            verified: false,
+            expiresAt: {
+                gt: new Date()
+            }
+        }
+    });
+
+    if (!otpRecord) {
+        throw new Error("Invalid or expired OTP.");
+    }
+
+    await prisma.user.update({
+        where: {
+            phone
+        },
+        data: {
+            phoneVerified: true
+        }
+    });
+
+    await prisma.oTP.update({
+        where: {
+            id: otpRecord.id
+        },
+        data: {
+            verified: true
+        }
+    });
+
+    return {
+        message: "Phone verified successfully."
     };
 
 };
+
+const verifyEmail = async (email, code) => {
+
+    // Find the OTP
+    const otpRecord = await prisma.oTP.findFirst({
+        where: {
+            email,
+            code,
+            verified: false,
+            expiresAt: {
+                gt: new Date()
+            }
+        }
+    });
+
+    if (!otpRecord) {
+        throw new Error("Invalid or expired verification code.");
+    }
+
+    // Find the user
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
+
+    if (!user) {
+        throw new Error("User not found.");
+    }
+
+    // Mark email as verified
+    await prisma.user.update({
+        where: {
+            email
+        },
+        data: {
+            emailVerified: true
+        }
+    });
+
+    // Mark OTP as used
+    await prisma.oTP.update({
+        where: {
+            id: otpRecord.id
+        },
+        data: {
+            verified: true
+        }
+    });
+
+    return {
+        message: "Email verified successfully."
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = {
     registerUser,
     loginUser,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifyEmail
 };
