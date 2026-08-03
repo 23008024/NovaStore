@@ -96,7 +96,15 @@ console.log("OTP saved successfully:", otp);
     console.log("User created:", user.email);
 console.log("Sending verification email to:", email);
 
-await sendVerificationEmail(email, otp);
+try {
+    console.log("Calling sendVerificationEmail...");
+    await sendVerificationEmail(email, otp);
+    console.log("sendVerificationEmail finished.");
+} catch (err) {
+    console.error("EMAIL ERROR:");
+    console.error(err);
+    throw err;
+}
 
 console.log("Verification email function completed.");
 
@@ -224,23 +232,22 @@ const forgotPassword = async (email) => {
     };
 
 };
-const resetPassword = async (token, password) => {
-
-    const user = await prisma.user.findFirst({
-        where: {
-            resetToken: token,
-            resetTokenExpiry: {
-                gt: new Date()
-            }
+const user = await prisma.user.findFirst({
+    where: {
+        resetToken: token,
+        resetTokenExpiry: {
+            gt: new Date()
         }
-    });
-    if (!user.emailVerified) {
-    throw new Error("Please verify your email before logging in.");
+    }
+});
+
+if (!user) {
+    throw new Error("Invalid or expired reset link.");
 }
 
-    if (!user) {
-        throw new Error("Invalid or expired reset link.");
-    }
+if (!user.emailVerified) {
+    throw new Error("Please verify your email before logging in.");
+}
 
     if (!passwordRegex.test(password)) {
         throw new Error(
