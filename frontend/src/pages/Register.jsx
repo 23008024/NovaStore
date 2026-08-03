@@ -34,9 +34,11 @@ export default function Register() {
         });
 
 
-        setMessage(
-            "Registration successful! Please check your email and verify your account using the OTP code sent to you."
-        );
+        navigate("/verify-email", {
+    state: {
+        email: form.email
+    }
+});
 
 
     } catch (error) {
