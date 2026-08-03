@@ -23,29 +23,34 @@ export default function Register() {
         try {
 
             // Combine first and last name because your backend expects one "name"
-            const fullName = `${form.firstName} ${form.lastName}`;
+            const submit = async (e) => {
+    e.preventDefault();
 
-            await register(
-    form.firstName,
-    form.lastName,
-    form.email,
-    form.password,
-    form.countryCode,
-    form.phone
-);
+    try {
 
-            alert("Registration successful!");
-            navigate("/login");
+        await register({
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            password: form.password,
+            phoneCode: form.countryCode,
+            phone: form.phone,
+            marketing: form.marketing
+        });
 
-        } catch (error) {
+        alert("Registration successful!");
 
-            alert(
-                error.response?.data?.message ||
-                "Registration failed"
-            );
+        navigate("/login");
 
-        }
-    };
+    } catch (error) {
+
+        alert(
+            error.response?.data?.message ||
+            "Registration failed"
+        );
+
+    }
+};
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
