@@ -42,6 +42,13 @@ const sendResetEmail = async (email, link) => {
 // Email Verification
 const sendVerificationEmail = async (email, code) => {
     try {
+
+        console.log("==================================");
+        console.log("Sending verification email...");
+        console.log("Recipient:", email);
+        console.log("Sender:", process.env.EMAIL_USER);
+        console.log("OTP:", code);
+
         const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: email,
@@ -59,12 +66,18 @@ const sendVerificationEmail = async (email, code) => {
             `
         });
 
-        console.log("✅ Verification email sent.");
+        console.log("✅ Verification email sent successfully.");
         console.log("Message ID:", info.messageId);
+        console.log("Response:", info.response);
+        console.log("==================================");
 
     } catch (error) {
-        console.error("❌ Email sending failed:");
+
+        console.error("==================================");
+        console.error("❌ Email sending failed");
         console.error(error);
+        console.error("==================================");
+
         throw error;
     }
 };
