@@ -18,6 +18,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminCategories from "./pages/AdminCategories";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
 export default function App() {
 
     return (
@@ -198,7 +199,7 @@ export default function App() {
         </AdminRoute>
     }
 />
-
+<Route path="/verify-email" element={<VerifyEmail />} />
 
             </Routes>
 
