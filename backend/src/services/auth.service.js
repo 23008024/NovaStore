@@ -362,19 +362,6 @@ const verifyEmail = async (email, code) => {
     };
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     registerUser,
     loginUser,
