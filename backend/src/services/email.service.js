@@ -11,14 +11,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 console.log("🚀 Running transporter.verify...");
-transporter.verify((error) => {
-    if (error) {
-        console.error("SMTP ERROR:");
-        console.error(error);
-    } else {
+(async () => {
+    try {
+        await transporter.verify();
         console.log("✅ Gmail SMTP connected successfully.");
+    } catch (err) {
+        console.error("❌ SMTP VERIFY FAILED");
+        console.error(err);
     }
-});
+})();
 
 // Password Reset Email
 const sendResetEmail = async (email, link) => {
