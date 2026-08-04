@@ -96,15 +96,7 @@ console.log("OTP saved successfully:", otp);
     console.log("User created:", user.email);
 console.log("Sending verification email to:", email);
 
-try {
-    console.log("Calling sendVerificationEmail...");
-    await sendVerificationEmail(email, otp);
-    console.log("sendVerificationEmail finished.");
-} catch (err) {
-    console.error("EMAIL ERROR:");
-    console.error(err);
-    throw err;
-}
+await sendVerificationEmail(email, otp);
 
 console.log("Verification email function completed.");
 
@@ -242,13 +234,12 @@ const resetPassword = async (token, password) => {
             }
         }
     });
+    if (!user.emailVerified) {
+    throw new Error("Please verify your email before logging in.");
+}
 
     if (!user) {
         throw new Error("Invalid or expired reset link.");
-    }
-
-    if (!user.emailVerified) {
-        throw new Error("Please verify your email before logging in.");
     }
 
     if (!passwordRegex.test(password)) {
@@ -273,8 +264,8 @@ const resetPassword = async (token, password) => {
     return {
         message: "Password has been reset successfully."
     };
-};
 
+}; // ✅ resetPassword ends here
 
 const verifyPhone = async (phoneCode, phone, otp) => {
 
@@ -378,3 +369,4 @@ module.exports = {
     resetPassword,
     verifyEmail
 };
+
