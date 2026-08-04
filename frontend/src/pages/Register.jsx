@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
-
     const { register } = useAuth();
     const navigate = useNavigate();
 
@@ -16,283 +15,195 @@ export default function Register() {
         phone: "",
         marketing: false,
     });
+
+    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [success, setSuccess] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        setForm((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
+    };
 
     const submit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    try {
+        setLoading(true);
+        setMessage("");
 
-        await register({
-            firstName: form.firstName,
-            lastName: form.lastName,
-            email: form.email,
-            password: form.password,
-            phoneCode: form.countryCode,
-            phone: form.phone,
-            marketing: form.marketing
-        });
+        try {
+            const response = await register({
+                firstName: form.firstName,
+                lastName: form.lastName,
+                email: form.email,
+                password: form.password,
+                phoneCode: form.countryCode,
+                phone: form.phone,
+                marketing: form.marketing,
+            });
 
+            setSuccess(true);
 
-        navigate("/verify-email", {
-    state: {
-        email: form.email
-    }
-});
+            setMessage(
+                response?.message ||
+                "Registration successful! Please check your email for the verification code."
+            );
 
+            setTimeout(() => {
+                navigate("/verify-email", {
+                    state: {
+                        email: form.email,
+                    },
+                });
+            }, 2000);
 
-    } catch (error) {
+        } catch (error) {
 
-        setMessage(
-            error.response?.data?.message ||
-            "Registration failed. Please try again."
-        );
+            console.error(error);
 
-    }
-};
+            setSuccess(false);
+
+            setMessage(
+                error.response?.data?.message ||
+                error.message ||
+                "Registration failed."
+            );
+
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
 
-            <div className="bg-white shadow-xl rounded-2xl w-full max-w-lg p-8">
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-8">
 
                 <h1 className="text-3xl font-bold text-center mb-2">
-                    Register
+                    Create Account
                 </h1>
 
-                {/* Social Buttons */}
+                <p className="text-center text-gray-500 mb-6">
+                    Register to start shopping on NovaStore.
+                </p>
 
-                <button
-                    type="button"
-                    className="w-full border rounded-xl py-3 font-medium hover:bg-gray-50 transition mb-3"
-                >
-                    🔵 Register with Google
-                </button>
-
-                <button
-                    type="button"
-                    className="w-full border rounded-xl py-3 font-medium hover:bg-gray-50 transition"
-                >
-                    🔷 Register with Facebook
-                </button>
-
-                {/* Divider */}
-
-                <div className="flex items-center my-6">
-
-                    <hr className="flex-grow" />
-
-                    <span className="mx-4 text-gray-500">
-                        Or
-                    </span>
-
-                    <hr className="flex-grow" />
-
-                </div>
+                {message && (
+                    <div
+                        className={`mb-5 rounded-lg p-4 text-center ${
+                            success
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                        {message}
+                    </div>
+                )}
 
                 <form onSubmit={submit}>
-                    {message && (
-    <div className="bg-green-100 text-green-700 border border-green-300 rounded-lg p-4 mb-5 text-center">
-        {message}
-    </div>
-)}
-
-                    {/* First & Last Name */}
 
                     <div className="grid grid-cols-2 gap-4 mb-4">
 
-                        <div>
-
-                            <label className="block mb-2 font-medium">
-                                First Name
-                            </label>
-
-                            <input
-                                type="text"
-                                value={form.firstName}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        firstName: e.target.value,
-                                    })
-                                }
-                                className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
-                            />
-
-                        </div>
-
-                        <div>
-
-                            <label className="block mb-2 font-medium">
-                                Last Name
-                            </label>
-
-                            <input
-                                type="text"
-                                value={form.lastName}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        lastName: e.target.value,
-                                    })
-                                }
-                                className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                                required
-                            />
-
-                        </div>
-
-                    </div>
-
-                    {/* Email */}
-
-                    <div className="mb-4">
-
-                        <label className="block mb-2 font-medium">
-                            Email Address
-                        </label>
+                        <input
+                            name="firstName"
+                            type="text"
+                            placeholder="First Name"
+                            value={form.firstName}
+                            onChange={handleChange}
+                            className="border rounded-lg px-4 py-3"
+                            required
+                        />
 
                         <input
-                            type="email"
-                            value={form.email}
-                            onChange={(e) =>
-                                setForm({
-                                    ...form,
-                                    email: e.target.value,
-                                })
-                            }
-                            className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                            name="lastName"
+                            type="text"
+                            placeholder="Last Name"
+                            value={form.lastName}
+                            onChange={handleChange}
+                            className="border rounded-lg px-4 py-3"
                             required
                         />
 
                     </div>
 
-                    {/* Password */}
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Email Address"
+                        value={form.email}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-4 py-3 mb-4"
+                        required
+                    />
 
-                    <div className="mb-2">
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        value={form.password}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-4 py-3 mb-4"
+                        required
+                    />
 
-                        <label className="block mb-2 font-medium">
-                            Password
-                        </label>
+                    <div className="flex gap-3 mb-4">
+
+                        <select
+                            name="countryCode"
+                            value={form.countryCode}
+                            onChange={handleChange}
+                            className="border rounded-lg px-3"
+                        >
+                            <option value="+27">ZA (+27)</option>
+                            <option value="+1">US (+1)</option>
+                            <option value="+44">UK (+44)</option>
+                        </select>
 
                         <input
-                            type="password"
-                            value={form.password}
-                            onChange={(e) =>
-                                setForm({
-                                    ...form,
-                                    password: e.target.value,
-                                })
-                            }
-                            className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                            required
+                            name="phone"
+                            type="tel"
+                            placeholder="Mobile Number"
+                            value={form.phone}
+                            onChange={handleChange}
+                            className="flex-1 border rounded-lg px-4 py-3"
                         />
 
-                        <p className="text-sm text-gray-500 mt-2">
-                            At least 8 characters and 1 special character or number
-                        </p>
-
                     </div>
 
-                    {/* Phone */}
-
-                    <div className="mt-5">
-
-                        <label className="block mb-2 font-medium">
-                            Mobile Number
-                        </label>
-
-                        <div className="flex gap-3">
-
-                            <select
-                                value={form.countryCode}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        countryCode: e.target.value,
-                                    })
-                                }
-                                className="border rounded-lg px-3 py-3"
-                            >
-                                <option value="+27">ZA (+27)</option>
-                                <option value="+1">US (+1)</option>
-                                <option value="+44">UK (+44)</option>
-                            </select>
-
-                            <input
-                                type="tel"
-                                placeholder="Mobile Number"
-                                value={form.phone}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        phone: e.target.value,
-                                    })
-                                }
-                                className="flex-1 border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                            />
-
-                        </div>
-
-                        <p className="text-sm text-gray-500 mt-2">
-                            A One-Time PIN will be sent via SMS to verify this number.
-                        </p>
-
-                    </div>
-
-                    {/* Marketing */}
-
-                    <div className="flex items-start gap-3 mt-6">
+                    <label className="flex items-center gap-2 mb-5">
 
                         <input
+                            name="marketing"
                             type="checkbox"
                             checked={form.marketing}
-                            onChange={(e) =>
-                                setForm({
-                                    ...form,
-                                    marketing: e.target.checked,
-                                })
-                            }
-                            className="mt-1"
+                            onChange={handleChange}
                         />
 
                         <span className="text-sm">
-                            I want to receive offers and wish list newsletters.
+                            Receive promotions and newsletters
                         </span>
 
-                    </div>
-
-                    {/* Continue */}
+                    </label>
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold mt-6"
+                        disabled={loading}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
                     >
-                        Continue
+                        {loading ? "Creating account..." : "Register"}
                     </button>
 
-                    {/* Terms */}
-
-                    <p className="text-xs text-gray-500 text-center mt-5">
-                        By clicking <strong>Continue</strong>, you agree to our
-                        Terms and Conditions and confirm that you are over
-                        18 years of age.
-                    </p>
-
-                    {/* Login */}
-
                     <p className="text-center mt-6">
-
                         Already have an account?{" "}
-
                         <Link
                             to="/login"
-                            className="text-blue-600 font-semibold hover:underline"
+                            className="text-blue-600 font-semibold"
                         >
                             Login
                         </Link>
-
                     </p>
 
                 </form>

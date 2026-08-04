@@ -44,27 +44,34 @@ export default function Login() {
                     {/* Email */}
 
                     <div className="mb-5">
-
-                        <label className="block font-medium mb-2">
+                        <label
+                            htmlFor="email"
+                            className="block font-medium mb-2"
+                        >
                             Email Address
                         </label>
 
                         <input
+                            id="email"
+                            name="email"
                             type="email"
+                            autoComplete="email"
                             placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
                             required
                         />
-
                     </div>
 
                     {/* Password */}
 
                     <div className="mb-2 flex justify-between">
 
-                        <label className="font-medium">
+                        <label
+                            htmlFor="password"
+                            className="font-medium"
+                        >
                             Password
                         </label>
 
@@ -78,7 +85,10 @@ export default function Login() {
                     </div>
 
                     <input
+                        id="password"
+                        name="password"
                         type="password"
+                        autoComplete="current-password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -91,15 +101,20 @@ export default function Login() {
                     <div className="flex items-center mb-6">
 
                         <input
+                            id="remember"
+                            name="remember"
                             type="checkbox"
                             checked={remember}
                             onChange={(e) => setRemember(e.target.checked)}
                             className="mr-2"
                         />
 
-                        <span className="text-sm">
+                        <label
+                            htmlFor="remember"
+                            className="text-sm"
+                        >
                             Remember Me
-                        </span>
+                        </label>
 
                     </div>
 
@@ -113,36 +128,6 @@ export default function Login() {
                     </button>
 
                 </form>
-
-                {/* Divider */}
-
-                <div className="flex items-center my-6">
-
-                    <hr className="flex-grow" />
-
-                    <span className="mx-3 text-gray-500 text-sm">
-                        Or
-                    </span>
-
-                    <hr className="flex-grow" />
-
-                </div>
-
-                {/* Google */}
-
-                <button
-                    className="w-full border rounded-lg py-3 mb-3 font-medium hover:bg-gray-50 transition"
-                >
-                    🔵 Login with Google
-                </button>
-
-                {/* Facebook */}
-
-                <button
-                    className="w-full border rounded-lg py-3 font-medium hover:bg-gray-50 transition"
-                >
-                    🔷 Login with Facebook
-                </button>
 
                 {/* Register */}
 

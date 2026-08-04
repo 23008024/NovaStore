@@ -86,13 +86,17 @@ export default function AdminProducts() {
 
             loadProducts();
 
-        } catch (error) {
+        } 
+        catch (error) {
+    console.error(error);
+    console.error(error.response);
 
-            console.log(error);
-
-            alert("Unable to save product");
-
-        }
+    alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Unable to save product"
+    );
+}
 
     };
 

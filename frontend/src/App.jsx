@@ -96,24 +96,7 @@ export default function App() {
                         </MainLayout>
                     }
                 />
-       <Route
-    path="/login"
-    element={
-        <MainLayout>
-            <Login />
-        </MainLayout>
-    }
-/>
-
-<Route
-    path="/register"
-    element={
-        <MainLayout>
-            <Register />
-        </MainLayout>
-    }
-/>
-
+       
 <Route
     path="/forgot-password"
     element={

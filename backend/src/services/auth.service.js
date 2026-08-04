@@ -1,7 +1,10 @@
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+
 const { prisma } = require("../config/database");
 const { generateToken } = require("../utils/jwt");
 const { generateOTP } = require("../utils/otp");
+
 const {
     sendResetEmail,
     sendVerificationEmail
@@ -194,7 +197,7 @@ const forgotPassword = async (email) => {
         };
     }
 
-    const token = generateResetToken();
+    const token = crypto.randomBytes(32).toString("hex");
 
     const expiry = new Date(
         Date.now() + 30 * 60 * 1000
@@ -234,13 +237,13 @@ const resetPassword = async (token, password) => {
             }
         }
     });
-    if (!user.emailVerified) {
-    throw new Error("Please verify your email before logging in.");
+    if (!user) {
+    throw new Error("Invalid or expired reset link.");
 }
 
-    if (!user) {
-        throw new Error("Invalid or expired reset link.");
-    }
+if (!user.emailVerified) {
+    throw new Error("Please verify your email before logging in.");
+}
 
     if (!passwordRegex.test(password)) {
         throw new Error(

@@ -1,15 +1,16 @@
 const {
     registerUser,
     loginUser,
-    forgotPassword,
+    forgotPassword: forgotPasswordService,
     resetPassword,
     verifyEmail
 } = require("../services/auth.service");
 
+// =========================
+// Register
+// =========================
 const register = async (req, res) => {
-
     try {
-
         const {
             firstName,
             lastName,
@@ -42,13 +43,13 @@ const register = async (req, res) => {
         });
 
     }
-
 };
 
+// =========================
+// Login
+// =========================
 const login = async (req, res) => {
-
     try {
-
         const { email, password } = req.body;
 
         const result = await loginUser(email, password);
@@ -67,16 +68,16 @@ const login = async (req, res) => {
         });
 
     }
-
 };
 
-const forgotPasswordController = async (req, res) => {
-
+// =========================
+// Forgot Password
+// =========================
+const forgotPassword = async (req, res) => {
     try {
-
         const { email } = req.body;
 
-        const result = await forgotPassword(email);
+        const result = await forgotPasswordService(email);
 
         res.status(200).json({
             success: true,
@@ -85,19 +86,21 @@ const forgotPasswordController = async (req, res) => {
 
     } catch (error) {
 
+        console.error("Forgot Password Error:", error);
+
         res.status(400).json({
             success: false,
             message: error.message
         });
 
     }
-
 };
 
+// =========================
+// Reset Password
+// =========================
 const resetPasswordController = async (req, res) => {
-
     try {
-
         const { token, password } = req.body;
 
         const result = await resetPassword(token, password);
@@ -109,17 +112,21 @@ const resetPasswordController = async (req, res) => {
 
     } catch (error) {
 
+        console.error("Reset Password Error:", error);
+
         res.status(400).json({
             success: false,
             message: error.message
         });
 
     }
-
 };
+
+// =========================
+// Verify Email
+// =========================
 const verifyEmailController = async (req, res) => {
     try {
-
         const { email, code } = req.body;
 
         const result = await verifyEmail(email, code);
@@ -131,6 +138,8 @@ const verifyEmailController = async (req, res) => {
 
     } catch (error) {
 
+        console.error("Verify Email Error:", error);
+
         res.status(400).json({
             success: false,
             message: error.message
@@ -138,11 +147,15 @@ const verifyEmailController = async (req, res) => {
 
     }
 };
+
 module.exports = {
     register,
     login,
     forgotPassword,
-    resetPassword,
+    resetPassword: resetPasswordController,
     verifyEmail: verifyEmailController
+
 };
+
+
 
