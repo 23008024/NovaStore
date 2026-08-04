@@ -2,8 +2,8 @@ console.log("🚀 email.service.js loaded");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
+    host: "smtp.gmail.com",
+    port: 465,
     secure: true,
     auth: {
         user: process.env.EMAIL_USER,
