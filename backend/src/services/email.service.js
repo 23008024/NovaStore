@@ -1,3 +1,4 @@
+console.log("🚀 email.service.js loaded");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
