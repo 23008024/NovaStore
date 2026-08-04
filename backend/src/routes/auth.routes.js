@@ -34,3 +34,4 @@ router.post(
 router.post("/verify-email", verifyEmail);
 
 module.exports = router;
+
