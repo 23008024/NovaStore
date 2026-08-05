@@ -5,17 +5,11 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    sendPasswordResetEmail,
     signOut
 } from "firebase/auth";
 
 import { auth } from "../firebase/firebase";
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    sendEmailVerification,
-    sendPasswordResetEmail,
-    signOut
-} from "firebase/auth";
 
 const AuthContext = createContext();
 
