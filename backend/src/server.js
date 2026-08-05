@@ -5,9 +5,8 @@ const { connectDatabase } = require("./config/database");
 
 // Initialize email service
 require("./services/email.service");
-
-console.log("MAILJET_API_KEY loaded:", !!process.env.MAILJET_API_KEY);
-console.log("MAILJET_SECRET_KEY loaded:", !!process.env.MAILJET_SECRET_KEY);
+console.log("RESEND_API_KEY loaded:", !!process.env.RESEND_API_KEY);
+console.log("MAIL_FROM_EMAIL:", process.env.MAIL_FROM_EMAIL);
 console.log("MAIL_FROM_EMAIL:", process.env.MAIL_FROM_EMAIL);
 console.log("MAIL_FROM_NAME:", process.env.MAIL_FROM_NAME);
 
