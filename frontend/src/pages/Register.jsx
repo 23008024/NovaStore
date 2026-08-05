@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification
+} from "firebase/auth";
+
+import { auth } from "../firebase/firebase";
 
 export default function Register() {
     const { register } = useAuth();
@@ -36,30 +42,37 @@ export default function Register() {
         setMessage("");
 
         try {
-            const response = await register({
-                firstName: form.firstName,
-                lastName: form.lastName,
-                email: form.email,
-                password: form.password,
-                phoneCode: form.countryCode,
-                phone: form.phone,
-                marketing: form.marketing,
-            });
+            // 1. Create Firebase account
+const firebaseUser = await createUserWithEmailAndPassword(
+    auth,
+    form.email,
+    form.password
+);
+
+// 2. Send verification email
+await sendEmailVerification(firebaseUser.user);
+
+// 3. Save user in your backend
+const response = await register({
+    firstName: form.firstName,
+    lastName: form.lastName,
+    email: form.email,
+    password: form.password,
+    phoneCode: form.countryCode,
+    phone: form.phone,
+    marketing: form.marketing,
+});
 
             setSuccess(true);
 
             setMessage(
                 response?.message ||
-                "Registration successful! Please check your email for the verification code."
+                "Registration successful! Please check your inbox and verify your email before logging in."
             );
 
             setTimeout(() => {
-                navigate("/verify-email", {
-                    state: {
-                        email: form.email,
-                    },
-                });
-            }, 2000);
+    navigate("/login");
+}, 2000);
 
         } catch (error) {
 

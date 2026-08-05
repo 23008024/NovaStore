@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import {
+    signInWithEmailAndPassword,
+    signOut,
+    sendEmailVerification
+} from "firebase/auth";
+
+import { auth } from "../firebase/firebase";
 
 export default function Login() {
     const { login } = useAuth();
@@ -9,23 +16,59 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
+const submit = async (e) => {
+    e.preventDefault();
 
-    const submit = async (e) => {
-        e.preventDefault();
+    try {
 
-        try {
-            const loggedUser = await login(email, password, remember);
+        // Login with Firebase
+        const credential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-            if (loggedUser.role === "ADMIN") {
-                navigate("/admin");
-            } else {
-                navigate("/");
-            }
-        } catch (error) {
-            alert(error.response?.data?.message || "Login failed");
+        // Refresh user information
+        await credential.user.reload();
+
+        // Check email verification
+        if (!credential.user.emailVerified) {
+
+    await sendEmailVerification(credential.user);
+
+    await signOut(auth);
+
+    alert(
+        "Your email is not verified.\n\nA new verification email has been sent. Please check your inbox."
+    );
+
+    return;
+}
+
+        // Login to your backend
+        const loggedUser = await login(
+            email,
+            password,
+            remember
+        );
+
+        if (loggedUser.role === "ADMIN") {
+            navigate("/admin");
+        } else {
+            navigate("/");
         }
-    };
 
+    } catch (error) {
+
+    
+    alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Login failed."
+    );
+}
+};
+    
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
 
