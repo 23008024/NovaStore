@@ -1,15 +1,38 @@
 console.log("🚀 email.service.js loaded");
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+const sendResetEmail = async (email, link) => {
+    try {
+        console.log("==================================");
+        console.log("Sending password reset email...");
+        console.log("Recipient:", email);
+        console.log("Reset Link:", link);
+
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "NovaStore Password Reset",
+            html: `
+                <h2>Password Reset</h2>
+                <p>You requested to reset your password.</p>
+                <p>
+                    <a href="${link}">
+                        Reset Password
+                    </a>
+                </p>
+                <p>This link expires in 30 minutes.</p>
+            `
+        });
+
+        console.log("✅ Password reset email sent.");
+        console.log(info.messageId);
+        console.log("==================================");
+    } catch (error) {
+        console.error("❌ Reset email failed");
+        console.error(error);
+        throw error;
     }
-});
+};
 console.log("🚀 Running transporter.verify...");
 (async () => {
     try {
