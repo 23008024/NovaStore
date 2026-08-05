@@ -1,32 +1,8 @@
+const { Resend } = require("resend");
+
 console.log("🚀 email.service.js loaded");
 
-const nodemailer = require("nodemailer");
-
-// ==========================================
-// Gmail Transporter
-// ==========================================
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-
-// ==========================================
-// Verify SMTP Connection
-// ==========================================
-console.log("🚀 Running transporter.verify...");
-
-(async () => {
-    try {
-        await transporter.verify();
-        console.log("✅ Gmail SMTP connected successfully.");
-    } catch (err) {
-        console.error("❌ SMTP VERIFY FAILED");
-        console.error(err);
-    }
-})();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ==========================================
 // Password Reset Email
@@ -36,11 +12,10 @@ const sendResetEmail = async (email, link) => {
         console.log("==================================");
         console.log("Sending password reset email...");
         console.log("Recipient:", email);
-        console.log("Sender:", process.env.EMAIL_USER);
         console.log("Reset Link:", link);
 
-        const info = await transporter.sendMail({
-            from: `"NovaStore" <${process.env.EMAIL_USER}>`,
+        const response = await resend.emails.send({
+            from: "NovaStore <onboarding@resend.dev>",
             to: email,
             subject: "NovaStore Password Reset",
             html: `
@@ -49,32 +24,25 @@ const sendResetEmail = async (email, link) => {
                 <p>You requested to reset your password.</p>
 
                 <p>
-                    Click the link below to reset your password:
+                    <a href="${link}">
+                        Reset Password
+                    </a>
                 </p>
 
-                <a href="${link}">
-                    Reset Password
-                </a>
-
-                <p>
-                    This link expires in 30 minutes.
-                </p>
+                <p>This link expires in 30 minutes.</p>
             `
         });
 
-        console.log("✅ Password reset email sent successfully.");
-        console.log("Message ID:", info.messageId);
-        console.log("Response:", info.response);
+        console.log("✅ Password reset email sent.");
+        console.log(response);
         console.log("==================================");
 
     } catch (error) {
 
-        console.error("==================================");
         console.error("❌ Password reset email failed");
         console.error(error);
-        console.error("==================================");
-
         throw error;
+
     }
 };
 
@@ -87,11 +55,9 @@ const sendVerificationEmail = async (email, code) => {
         console.log("==================================");
         console.log("Sending verification email...");
         console.log("Recipient:", email);
-        console.log("Sender:", process.env.EMAIL_USER);
-        console.log("OTP:", code);
 
-        const info = await transporter.sendMail({
-            from: `"NovaStore" <${process.env.EMAIL_USER}>`,
+        const response = await resend.emails.send({
+            from: "NovaStore <onboarding@resend.dev>",
             to: email,
             subject: "Verify your NovaStore account",
             html: `
@@ -109,25 +75,19 @@ const sendVerificationEmail = async (email, code) => {
             `
         });
 
-        console.log("✅ Verification email sent successfully.");
-        console.log("Message ID:", info.messageId);
-        console.log("Response:", info.response);
+        console.log("✅ Verification email sent.");
+        console.log(response);
         console.log("==================================");
 
     } catch (error) {
 
-        console.error("==================================");
         console.error("❌ Verification email failed");
         console.error(error);
-        console.error("==================================");
-
         throw error;
+
     }
 };
 
-// ==========================================
-// Exports
-// ==========================================
 module.exports = {
     sendResetEmail,
     sendVerificationEmail
