@@ -4,7 +4,6 @@ const app = require("./app");
 const { connectDatabase } = require("./config/database");
 
 // Initialize email service
-require("./services/email.service");
 console.log("RESEND_API_KEY loaded:", !!process.env.RESEND_API_KEY);
 console.log("MAIL_FROM_EMAIL:", process.env.MAIL_FROM_EMAIL);
 console.log("MAIL_FROM_EMAIL:", process.env.MAIL_FROM_EMAIL);
